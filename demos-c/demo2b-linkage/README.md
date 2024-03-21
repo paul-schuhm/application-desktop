@@ -63,7 +63,7 @@ En tant qu'utilisateur, je récupère une copie de ces deux fichiers (`student.h
 
 ### Compiler (compilation et assemblage)
 
-1. Pour pouvoir utiliser la librairie `libstudent` dans mon projet, je dois include le header pour dire au compilateur que les appels de fonctions ou structure de données que j'utilise **sont définies quelque part** et que je respecte leur signature :
+Pour utiliser la librairie `libstudent` dans mon projet, je dois inclure le *header* pour prévenir le compilateur que les appels de fonctions ou structure de données que j'utilise **sont définies quelque part** et que je respecte leur signature :
 
 ~~~c
 #include "student.h"
@@ -85,13 +85,11 @@ Le fichier objet contient encore ses références, elles doivent à présent êt
 
 > Le système a des moyens (il est configuré pour) pour trouver tout seul l'emplacement de la librairie compilée de `stdio.h` (le binaire s'appelle `libc.so`). Mon executable sera linké de manière dynamique par le linker au binaire de `printf` (qu'il sait trouver). Je n'ai pas besoin de le faire explicitement ici.
 
-Il faut donc ici seulement linker le fichier objet `main.o` avec la librairie dynamique `libmylib.so`
-
+Il faut donc ici seulement *linker* le fichier objet `main.o` avec la librairie dynamique `libmylib.so`
 
 ~~~bash
 gcc -L$(pwd) main.o -lstudent -o myapp -Wl,-rpath,$(pwd)
 ~~~
-
 
 
 ## Changer d'implémentation par une autre à l'execution
@@ -107,7 +105,7 @@ LD_PRELOAD=libstudent2.so ./myapp
 LD_PRELOAD=libstudent.so ./myapp
 ~~~ 
 
-Voilà pourquoi on parle de *dynamic library*, c'est qu'elle peut être changée à l’exécution (au *runtime*) ! On peut ainsi déployer une mise à jour de `libstudent`, ou une version alternative *sans avoir à recompiler le code client* `main.c` !
+Voilà pourquoi on parle également de *dynamic library*, c'est qu'elle peut être changée à l’exécution (au *runtime*) ! On peut ainsi déployer une mise à jour de `libstudent`, ou une version alternative *sans avoir à recompiler le code client* `main.c` !
 
 
 ## Créer un executable *standalone* : *dynamic library* vs *static library*
@@ -128,7 +126,7 @@ ar rcs libstudent.a student.o
 ar (archiver) L'option r indique à ar de remplacer ou d'ajouter les fichiers objet à la bibliothèque. L'option c crée la bibliothèque si elle n'existe pas. L'option s crée un index dans la bibliothèque, ce qui accélère le processus de liaison.
  -->
 
-Compiler l'application en *standalone* (static library) et *comparer la taille des executables* `myapp` et `staticapp` :
+Compiler l'application en *standalone* (*static library*) et *comparer la taille des executables* `myapp` et `staticapp` :
 
  ~~~bash
 gcc -o staticapp main.c -L.  -lstudent
@@ -170,6 +168,7 @@ Voir le fichier [Makefile](./Makefile) pour en savoir plus.
 
 ## Liens utiles
 
-- [Dynamic Link Library](https://fr.wikipedia.org/wiki/Dynamic_Link_Library)
-- [Shared Library](https://en.wikipedia.org/wiki/Shared_library)
-- [Édition de liens et *linker*](https://fr.wikipedia.org/wiki/%C3%89dition_de_liens)
+- [Dynamic Link Library](https://fr.wikipedia.org/wiki/Dynamic_Link_Library), Wikipédia
+- [Shared Library](https://en.wikipedia.org/wiki/Shared_library), Wikipédia
+- [Édition de liens et *linker*](https://fr.wikipedia.org/wiki/%C3%89dition_de_liens), Wikipédia
+- [Anatomy of an app](https://docs.flutter.dev/resources/architectural-overview#anatomy-of-an-app), documentation officielle de Flutter sur son architecture
