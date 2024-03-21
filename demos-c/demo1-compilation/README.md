@@ -187,7 +187,7 @@ Au moment de l'exécution, le système d'exploitation charge le programme binair
 
 Une *shared library* est un code binaire chargé en mémoire qui peut être utilisé par plusieurs programmes en même temps. Cela permet notamment d'optimiser l'usage de la mémoire. Le binaire de `printf` est chargé en mémoire une fois, et peut être utilisé par de nombreux programmes en même temps. 
 
-> Ce concept de *shared library* est abordé plus en détail de la deuxième démo.
+> Ce concept de *shared library* est abordé plus en détail [dans la deuxième démo](https://github.com/paul-schuhm/application-desktop/tree/main/demos-c/demo2b-linkage).
 
 Si on essaie d'exécuter le programme `say-hi` sur Windows, cela ne fonctionnera pas car l'executable généré est spécifique à l'OS GNU/Linux ([format ELF](https://fr.wikipedia.org/wiki/Executable_and_Linkable_Format)) ! Windows et Linux ne manipulent pas les mêmes formats de binaire. Également, lors de l'appel à `printf` (*dynamic linking*), il sera impossible de trouver (path) le binaire correspondant sur le système. `say-hi` est un programme *natif* à la plateforme GNU/Linux. Il a été *compilé pour cette plateforme* uniquement.
 
@@ -195,7 +195,7 @@ Si on essaie d'exécuter le programme `say-hi` sur Windows, cela ne fonctionnera
 
 [`GNU make` est un programme qui permet de maintenir des programmes](https://www.gnu.org/software/make/). Il permet d'automatiser la compilation de programmes à partir des fichiers sources. `make` fonctionne sur la base de *règles* à écrire.
 
-> L'utilité de make est mieux illustrée dans la démo 2 sur les shared libraries, où les sources et les dépendances sont plus nombreuses.
+> L'utilité de make est mieux illustrée [dans la deuxième démo](https://github.com/paul-schuhm/application-desktop/tree/main/demos-c/demo2b-linkage) sur les shared libraries, où les sources et les dépendances sont plus nombreuses.
 
 > Essayez `man make`. Naviguez.
 
