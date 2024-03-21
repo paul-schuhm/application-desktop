@@ -6,8 +6,10 @@ Dans cette démonstration, nous allons compiler du code source C vers un binaire
   - [Objectifs](#objectifs)
   - [Pré-requis](#pré-requis)
     - [Sous GNU/Linux (Debian, Ubuntu)](#sous-gnulinux-debian-ubuntu)
+    - [Sous macOS](#sous-macos)
     - [Sous Windows](#sous-windows)
-  - [Erreurs rencontrées et configuration de Windows](#erreurs-rencontrées-et-configuration-de-windows)
+      - [WSL](#wsl)
+      - [Erreurs rencontrées et configuration de Windows](#erreurs-rencontrées-et-configuration-de-windows)
   - [Compiler du code source C vers du langage machine (binaire)](#compiler-du-code-source-c-vers-du-langage-machine-binaire)
     - [Compilation](#compilation)
     - [Assemblage](#assemblage)
@@ -32,22 +34,30 @@ Installer le compilateur [gcc](https://fr.wikipedia.org/wiki/GNU_Compiler_Collec
 sudo apt install gcc
 ~~~
 
+### Sous macOS
+
+Installer gcc via [homebrew](https://formulae.brew.sh/formula/gcc).
+
 ### Sous Windows
 
-Installer Windows Subsystem for Linux (WSL 2) pour accéder à un environnement GNU/Linux (Ubuntu par défaut) sur votre machine. La WSL est une machine virtuelle intégrée à l'environnement Windows permettant d'executer un noyau linux et une distribution entière. Cette couche applicative intégrée à Windows vous permet donc d'accéder facilement à un écosystème GNU/Linux sur votre machine, sans avoir à installer ou configurer de machines virtuelles gourmandes en ressources, ou à installer un dual boot. La WSL 2 offre une interface vers un environnement GNU/Linux où l'utilisateur peut exécuter un shell Bash, ainsi que de célèbres programmes en ligne de commande GNU/Linux comme awk, sed, grep, etc.
+#### WSL
+
+Installer Windows Subsystem for Linux (WSL 2) pour accéder à un environnement GNU/Linux (Ubuntu par défaut) sur votre machine. La WSL est une machine virtuelle intégrée à l'environnement Windows permettant d'executer un noyau Linux et une distribution entière. Cette couche applicative *intégrée* à Windows vous permet donc d'accéder facilement à un écosystème GNU/Linux sur votre machine, sans avoir à installer ou configurer de machines virtuelles gourmandes en ressources, ou à installer un dual boot. 
+
+La WSL 2 offre une interface vers un environnement GNU/Linux où l'utilisateur peut exécuter un shell Bash, ainsi que de célèbres programmes en ligne de commande GNU/Linux comme awk, sed, grep, etc.
 
 Pour télécharger et installer WSL 2, vous pouvez vous rendre sur [la page officielle de Microsoft](https://learn.microsoft.com/fr-fr/windows/wsl/install) et suivre les instructions.
 
-Ouvrez une Invite de commandes en mode administrateur en cliquant avec le bouton droit et en sélectionnant `"Exécuter en tant qu'administrateur"`
+Ouvrez une Invite de commandes *en mode administrateur* en cliquant avec le bouton droit et en sélectionnant `"Exécuter en tant qu'administrateur"`
 
 ~~~bash
 wsl --install
 wsl --update
 ~~~
 
-Le programme wsl active les fonctionnalités nécessaires pour exécuter la WSL, télécharge et installe le dernier noyau Linux, définit WSL 2 comme valeur par défaut et télécharge la distribution Ubuntu par défaut. Si WSL est déjà installé, le programme wsl vous l'indique et vous demande de choisir la distribution à servir, vous avez le choix entre plusieurs distributions GNU/Linux comme Ubuntu, Debian ou openSUSE. 
+Le programme `wsl` active les fonctionnalités nécessaires pour exécuter la WSL, télécharge et installe le dernier noyau Linux, définit WSL 2 comme valeur par défaut et télécharge la distribution Ubuntu par défaut. Si WSL est déjà installé, le programme wsl vous l'indique et vous demande de choisir la distribution à servir, vous avez le choix entre plusieurs distributions GNU/Linux comme Ubuntu, Debian ou openSUSE. 
 
-## Erreurs rencontrées et configuration de Windows
+#### Erreurs rencontrées et configuration de Windows
 
 **En cas de problèmes avec wsl**, veuillez [consulter cette page de problèmes connus](https://learn.microsoft.com/fr-fr/windows/wsl/troubleshooting) avant de demander de l'aide. Vous pouvez également consulter la FAQ pour en savoir plus.
 
