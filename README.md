@@ -16,7 +16,7 @@ Sources du module d'enseignement Application Desktop, avec Flutter (niveau B3)
 Des démos en C commentées :
 
 - [Démo 1 : compilation](./demos-c/demo1-compilation/), illustration des différentes étapes de la *compilation* (avec C), introduction au concept de *shared library* et à l'outil `Make`
-- [Démo 2 : Compiler, distribuer et utiliser une librairie](./demos-c/demo2-linkage/), et rapprochement avec le fonctionnement de Flutter pour le build *"multi-target"*
+- [Démo 2 : Compiler, distribuer et utiliser une librairie](./demos-c/demo2b-linkage/), et rapprochement avec le fonctionnement de Flutter pour le build *"multi-natif"*
 
 ## Références
 
