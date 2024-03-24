@@ -27,20 +27,20 @@
 
 > On parlera indistinctement de "*library*", "librairie" ou "bibliothèque". On parle souvent de "librairie" en français malgré le fait que la traduction correcte de library soit "bibliothèque". Néanmoins, le mot librairie est plus court et c'est un faux ami qui permet de faire la correspondance du concept dans les deux langues.
 
-Nous avons une *library* `student`,du code, que nous souhaiterions distribuer. Ce code fournit une structure de données et des fonctions pour travailler sur des étudiant·es (système d'info d'une école par exemple). 
+Nous avons une *library* `student` que nous souhaiterions distribuer. Ce code fournit une structure de données et des fonctions pour travailler sur des étudiant·es (système d'info d'une école par exemple). 
 
-Si nous voulons *distribuer* ce code, nous n'allons distribuer que le header (`student.h`) et le binaire, et non le code source de l'implémentation (`student.c`), car l'utilisateur n'a pas à la connaître pour s'en servir. C'est ce qu'on appelle **l’encapsulation** (la même encapsulation qu'en POO !). Il a seulement besoin de connaître les *déclarations* et signatures de mes fonctions(l'*API* de ma library).
+Pour *distribuer* ce code, nous n'allons distribuer que le header (`student.h`) et le binaire, et non le code source de l'implémentation (`student.c`), car l'utilisateur n'a pas à la connaître pour s'en servir. C'est ce qu'on appelle **l’encapsulation** (la même encapsulation qu'en POO !). Il a seulement besoin de connaître les *déclarations* et signatures de mes fonctions(l'*API* de ma library).
 
 Pour cela, je vais donc distribuer aux utilisateur·ices :
 
 - Le header `student.h`, pour que l'utilisateur connaisse les signatures des fonctions et puisse s'en servir dans son propre code;
-- Mon implémentation compilée sous forme de librairie partagée (*shared library*) (`.so`)
+- Mon implémentation compilée sous forme de librairie partagée (*shared library*) (`libstudent.so`).
 
 ## Qu'est ce qu'une librairie partagée (shared library) ?
 
-Une librairie partagée (aussi appelée *dynamic library*) est un *fichier objet* (binaire, *code source compilé*). Sous Unix, les shared libraries sont appelées *shared object* (d'où l'extension `.so`), sous Windows elles sont appelées *dynamic link libraries* (ou DLLs, d'où l'extension `.dll`). Cela permet de partager des implémentations sous forme de binaire : fonctions, structures de données, etc.. 
+Une librairie partagée (aussi appelée *dynamic library*) est un *fichier objet* (binaire). Sous Unix, les shared libraries sont appelées *shared object* (d'où l'extension `.so`), sous Windows elles sont appelées *dynamic link libraries* (ou DLLs, d'où l'extension `.dll`). Cela permet de partager des implémentations sous forme de binaire : fonctions, structures de données, etc.. 
 
-Le code ainsi compilé peut être utilisé *par plusieurs programmes en même temps* (d'où le *shared library*). La librairie partagée est *linkée* de manière dynamique au *run-time* :  elle est chargée en mémoire *une fois*, au moment de l’exécution.
+Le code ainsi compilé peut être utilisé *par plusieurs programmes en même temps* (d'où le *shared library*). La librairie partagée est linkée au *run-time* :  elle est chargée en mémoire *une fois*, au moment de l’exécution.
 
 
 ## Créer la librairie partagée
@@ -59,7 +59,7 @@ La librairie partagée `libstudent.so` est crée. Je distribue `student.h` et `s
 
 ## Utiliser la librairie dynamique dans son projet
 
-En tant qu'utilisateur, je récupère une copie de ces deux fichiers (`student.h` et `libstudent.so`) pour les utiliser dans mon propre projet (ici `main.c`), mon code *client* :
+En tant qu'utilisateur, je récupère une copie de ces deux fichiers (`student.h` et `libstudent.so`) pour les utiliser dans mon propre projet (ici `main.c`).
 
 ### Compiler (compilation et assemblage)
 
@@ -79,13 +79,13 @@ gcc -c main.c
 
 ### Linker
 
-Le binaire `myapp.o` n'est pas encore executable car il contient des *références* vers des libraires : `student` (`struct Student`, `createStudent`, etc. ) et `stdio.h` (`printf`). Inclure le header a permis de fournir des déclarations, donc lors de la phase de compilation, **le compilateur a seulement vérifié que les fonctions et structures existaient et avaient la bonne signature**. 
+Le binaire `myapp.o` n'est pas encore executable car il contient des *références* vers des libraires : `student` (`struct Student`, `createStudent`, etc. ) et `stdio.h` (`printf`). Inclure le header a permis de fournir des déclarations. Ainsi, lors de la phase de compilation, **le compilateur a seulement vérifié que les fonctions et structures existaient et avaient la bonne signature**. Dans le cas contraire, il m'aurait retourné une erreur.
 
 Le fichier objet contient encore ses références, elles doivent à présent être liées à leurs codes binaires respectif pour fabriquer l'executable. C'est l'étape **d'édition des liens** (*linking*). 
 
-> Le système a des moyens (il est configuré pour) pour trouver tout seul l'emplacement de la librairie compilée de `stdio.h` (le binaire s'appelle `libc.so`). Mon executable sera linké de manière dynamique par le linker au binaire de `printf` (qu'il sait trouver). Je n'ai pas besoin de le faire explicitement ici.
+> Le système est configuré pour trouver tout seul l'emplacement de la librairie compilée de `stdio.h` (le binaire s'appelle `libc.so`). Je n'ai pas besoin de réaliser l'édition des liens explicitement.
 
-Il faut donc ici seulement *linker* le fichier objet `main.o` avec la librairie dynamique `libmylib.so`
+Il faut donc ici seulement *linker* le fichier objet `main.o` avec la librairie dynamique `libmylib.so` :
 
 ~~~bash
 gcc -L$(pwd) main.o -lstudent -o myapp -Wl,-rpath,$(pwd)
@@ -94,7 +94,7 @@ gcc -L$(pwd) main.o -lstudent -o myapp -Wl,-rpath,$(pwd)
 
 ## Changer d'implémentation par une autre à l'execution
 
-Pour remplacer une implémentation par une autre, il suffit de disposer du header `student.h` pour connaître la signature des fonctions, proposer son implementation, et la linker dynamiquement a l'exec `myapp`.
+Pour remplacer une implémentation par une autre, il suffit de disposer du header `student.h`, pour connaître la signature des fonctions, proposer son implementation, et la linker dynamiquement a l'exécutable `myapp`.
 
 Imaginons que l'on ait une deuxième implémentation de la library `student` (voir [`student-mod.c`](./student-mod.c)), et qu'on la compile en *shared library* sous le nom `libstudent2.so`. 
 
@@ -141,7 +141,7 @@ On voit que `staticapp` est environ *50 fois plus lourd* que `myapp`, car il con
 
 Une même application Dart/Flutter peut être compilée vers plusieurs plateformes. Pour cela, chaque application (code source Dart) *est embarquée dans un conteneur natif* (application) à l'OS. Le build d'une application Flutter se compose donc de trois parties :
 
-- **Une partie agnostique de l'OS** (indépendantes).Il s'agit du code Dart que vous écrivez pour votre application. Ce code est compilé en une bibliothèque partagée (*shared library*) qui est indépendante de la plateforme sur laquelle l'application va s'exécuter. **Cette approche permet de réutiliser le même code Dart sur différentes plateformes sans modification**.
+- **Une partie agnostique de l'OS**. Il s'agit du code Dart que vous écrivez pour votre application. Ce code est compilé en une bibliothèque partagée (*shared library*) qui est indépendante de la plateforme sur laquelle l'application va s'exécuter. **Cette approche permet de réutiliser le même code Dart sur différentes plateformes sans modification**.
 - **Une partie OS dépendante** fournie par Flutter. Flutter fournit une couche qui gère les interactions spécifiques à la plateforme, telles que l'interface utilisateur et le threading. **Cette partie inclut également le nécessaire pour intégrer votre application au système d'exploitation hôte comme l'affichage d'une fenêtre pour votre application**. Elle est également compilée en tant que bibliothèque partagée;
 - **Un executable binaire**. **Il s'agit du code source de l'*embedder* (ou conteneur natif) spécifique à chaque plateforme**, qui **initialise l'environnement d'exécution de Flutter et charge votre application Dart**. Cet executable est le point d'entrée de votre application lors de son lancement. **Il est lié dynamiquement aux deux bibliothèques partagées mentionnées précédemment**, permettant ainsi à votre application de s'exécuter sur n'importe quelle plateforme supportée par Flutter tout en utilisant les capacités natives de celle-ci.
 

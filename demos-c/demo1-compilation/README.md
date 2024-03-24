@@ -141,13 +141,13 @@ Dans [l'assembleur](https://fr.wikipedia.org/wiki/Assembleur), il y a encore des
 gcc -c main.s
 ~~~
 
-Cela crée un fichier objet (executable au format ELF) `main.o`. Lors de la phase d'assemblage, le langage assembleur est transformé en binaire. Cela produit **un fichier objet** `.o`, qui contient du binaire mais également des références vers les fonctions de la libraire standard incluse (dépendances du code source `main.c`).
+Cela crée un fichier objet (executable, au format ELF) `main.o`. Lors de la phase d'assemblage, le langage assembleur est transformé en binaire. Cela produit **un fichier objet** `.o`, qui contient du binaire mais également des références vers les fonctions de la libraire standard utilisées (dépendances du code source `main.c`).
 
 **Inspecter** le contenu du fichier `main.o` (`cat main.o`). Qu'est ce qui s'affiche ? Pourquoi ?
 
 > Sous le capot, `gcc` utilise l'assembleur `as`
 
-Le fichier *objet* **main.o** est un *artefact* qui n'**est pas encore exécutable**, car il doit accéder au binaire de la fonction `printf`
+Le fichier *objet* **main.o** est un *artefact* qui n'**est pas encore exécutable**, car il ne sait pas encore comment accéder au code binaire de la fonction `printf`.
 
 ### Linkage 
 
@@ -159,7 +159,7 @@ gcc -c: compilation et assemblage faits en une étape. gcc main.c ferait compila
 -o <file>: Place the output file into <file>
  -->
 
-**La phase d'édition des liens est la plus importante** à comprendre pour mieux comprendre comment Flutter est capable de *build* des executables natifs à chaque plateforme. 
+**La phase d'édition des liens est la plus importante** à comprendre, notamment pour mieux comprendre comment Flutter est capable de *build* des exécutables pour chaque plateforme. 
 
 À cette étape, le fichier objet `main.o` ne sait pas où trouver le code binaire de `printf`. La phase *d'édition des liens* (*linkage*) permet d'indiquer au compilateur **où** trouver le code binaire de la fonction `printf` sur la machine.
 
@@ -181,15 +181,19 @@ gcc main.o -o say-hi
 ./say-hi
 ~~~
 
-Que se passe-t-il ? Le binaire `say-hi` est *exécuté*, c'est à dire le binaire de la fonction `main`. Un binaire est un code directement pris en charge par l'OS et exécuté sur son noyau (abstraction logicielle autour du matériel y compris le CPU), *sans autre intermédiaire logiciel*. 
+Que se passe-t-il ? Le binaire `say-hi` est *exécuté* (fonction `main`). Un binaire est un code directement pris en charge par l'OS et exécuté sur son noyau (abstraction logicielle autour du matériel y compris le CPU), *sans autre intermédiaire logiciel*. 
 
-Au moment de l'exécution, le système d'exploitation charge le programme binaire en mémoire. Comme `say-hi` dépend de *bibliothèque partagée* (*shared library*) `stdio`, via l'appel à `printf`, le chargeur dynamique (dynamic linker/loader) s'occupe de charger ces bibliothèques en mémoire (**si elles ne le sont pas déjà**) et de résoudre les adresses des fonctions externes, comme `printf`, pour que les appels à ces fonctions puissent être correctement dirigés vers leur code.  Lorsque `say-hi` appelle `printf`, l'exécution saute à l'adresse de la fonction `printf` chargée en mémoire, exécute son code binaire, puis revient à l'instruction suivante dans `say-hi` une fois que `printf` a terminé son exécution.
+Au moment de l'exécution, le système d'exploitation charge le programme binaire en mémoire. Comme `say-hi` dépend de *bibliothèque partagée* `stdio`, via l'appel à `printf`, le chargeur dynamique (dynamic linker/loader) s'occupe de charger ces bibliothèques en mémoire, **si elles ne le sont pas déjà**, et de résoudre les adresses des fonctions externes, comme `printf`, pour que les appels à ces fonctions puissent être correctement dirigés vers leur code.
 
-Une *shared library* est un code binaire chargé en mémoire qui peut être utilisé par plusieurs programmes en même temps. Cela permet notamment d'optimiser l'usage de la mémoire. Le binaire de `printf` est chargé en mémoire une fois, et peut être utilisé par de nombreux programmes en même temps. 
+Lorsque `say-hi` appelle `printf`, l'exécution saute à l'adresse de la fonction `printf` chargée en mémoire, exécute son code binaire, puis revient à l'instruction suivante dans `say-hi`.
+
+Une *shared library* est un code binaire chargé en mémoire qui peut être utilisé par plusieurs programmes en même temps. Cela permet notamment d'optimiser l'usage de la mémoire.
 
 > Ce concept de *shared library* est abordé plus en détail [dans la deuxième démo](https://github.com/paul-schuhm/application-desktop/tree/main/demos-c/demo2b-linkage).
 
-Si on essaie d'exécuter le programme `say-hi` sur Windows, cela ne fonctionnera pas car l'executable généré est spécifique à l'OS GNU/Linux ([format ELF](https://fr.wikipedia.org/wiki/Executable_and_Linkable_Format)) ! Windows et Linux ne manipulent pas les mêmes formats de binaire. Également, lors de l'appel à `printf` (*dynamic linking*), il sera impossible de trouver (path) le binaire correspondant sur le système. `say-hi` est un programme *natif* à la plateforme GNU/Linux. Il a été *compilé pour cette plateforme* uniquement.
+Si on essaie d'exécuter le programme `say-hi` sur Windows, cela ne fonctionnera pas car l'executable généré est spécifique à l'OS GNU/Linux ([format ELF](https://fr.wikipedia.org/wiki/Executable_and_Linkable_Format)) ! Windows et Linux ne manipulent pas les mêmes formats de binaire. Également, lors de l'appel à `printf` (*dynamic linking*), il sera impossible de trouver le binaire correspondant sur le système. 
+
+`say-hi` est un programme *natif* à la plateforme GNU/Linux car il a été *compilé pour cette plateforme* uniquement.
 
 ## Bonus : scripter le processus de compilation avec `make`
 
@@ -255,5 +259,5 @@ Pour déférencer cette variable (extraire sa valeur) dans le `Makefile`
   - **Assemblage** : transformation de l'assembleur en fichier objet intermédiaire;
   - **Linkage** : création des liens entre le programme et le code binaire de ses dépendances sur la machine.
 - Chaque OS (ou langage) fournit dans son SDK des libraires utilisables pour le développement (`stdlib.h` fait partie du SDK du langage C appelé *librairie standard* du C);
-- Un *programme natif* est un programme compilé *vers une plateforme cible* (ici via `gcc`). Il est natif *à la plateforme* au sens où il a besoin d'accéder à du binaire présent sur la machine (shared library) et à un format spécifique à la plateforme. Ici, il est exécuté *directement* par l'OS (code machine ou binaire). 
-- Il existe des outils comme `make` pour automatiser les processus liées à la compilation, notamment dans le cas de projets réels ou le nombre de fichiers sources et de libraires est important
+- Un *programme natif* est un programme compilé *vers une plateforme cible* (ici via `gcc`). Il est natif *à la plateforme* au sens où il a besoin d'accéder à du binaire présent sur la machine (shared library) et à un format spécifique à la plateforme;
+- Il existe des outils comme `make` pour automatiser les processus liées à la compilation, notamment dans le cas de projets réels ou le nombre de fichiers sources et de libraires est important.
