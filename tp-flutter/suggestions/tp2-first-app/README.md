@@ -94,12 +94,14 @@ Si vous êtes dans VS Code, enregistrer les modifications. Le plugin Flutter va 
 
 <!-- ![w:300px](../../assets/dp-observer-flutter-provided.svg) -->
 
-<img src="../../assets/dp-observer-flutter-provided.svg" alt="Schéma UML du pattern Observer, implémentation en Flutter" width="90%">
+<img src="../../../assets/dp-observer-flutter-provided.svg" alt="Schéma UML du pattern Observer, implémentation en Flutter" width="90%">
 
 - classe `ChangeNotifier` : une classe qui peut notifier ses listeners de ses propres modifications d'état. Fournie par le paquet Dart `provider`. Voir partie du cours gestion d'état
 - classe `ChangeNotifierProvider` : Permet une gestion centralisée de l'état de l'application (Pattern Observer). Fournie par le paquet Dart `provider`. C'est un Widget spécial. Voir la partie du cours sur la gestion d'état
 - context : objet qui porte toutes les informations sur l'élément associé au widget (position, taille, parent, enfant), à l'instance en live du widget
 - `var appState = context.watch<MyAppState>` : Récupere l'instance de MyAppState associée au ChangeNotifier le plus proche. Voir partie du cours sur gestion d'état.
+
+> Vous l'avez reconnu, c'est bien [le Design Pattern Observer](https://refactoring.guru/design-patterns/observer) implémenté ici par Flutter. On reviendra sur son fonctionnement dans la suite du cours.
 
 ### Syntaxe
 

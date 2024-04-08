@@ -7,6 +7,7 @@ Un simple programme *Hello world* pour prendre en main `Flutter 3.*` (Installati
 A la racine du projet:
 
 ~~~
+flutter pub get
 flutter run
 ~~~
 
