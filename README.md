@@ -4,6 +4,7 @@ Sources du module d'enseignement Application Desktop, avec Flutter (niveau B3)
 
 - [application desktop](#application-desktop)
   - [Démos C](#démos-c)
+  - [TP Flutter](#tp-flutter)
   - [Références](#références)
     - [Documentation](#documentation)
     - [Codelabs](#codelabs)
@@ -17,6 +18,10 @@ Des démos en C commentées :
 
 - [Démo 1 : compilation](./demos-c/demo1-compilation/), illustration des différentes étapes de la *compilation* (avec C), introduction au concept de *shared library* et à l'outil `Make`
 - [Démo 2 : Compiler, distribuer et utiliser une librairie](./demos-c/demo2b-linkage/), et rapprochement avec le fonctionnement de Flutter pour le build *"multi-natif"*
+
+## TP Flutter
+
+[Accéder aux TP Flutter commentés (Module 2 : Découverte et Premiers avec Flutter)](./tp-flutter/)
 
 ## Références
 
