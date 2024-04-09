@@ -5,6 +5,8 @@ Sources du module d'enseignement Application Desktop, avec Flutter (niveau B3)
 - [application desktop](#application-desktop)
   - [Démos C](#démos-c)
   - [TP Flutter](#tp-flutter)
+  - [Starter application desktop](#starter-application-desktop)
+    - [GNU/Linux (Gnome look and feel)](#gnulinux-gnome-look-and-feel)
   - [Références](#références)
     - [Documentation](#documentation)
     - [Codelabs](#codelabs)
@@ -22,6 +24,12 @@ Des démos en C commentées :
 ## TP Flutter
 
 [Accéder aux TP Flutter commentés (Module 2 : Découverte et Premiers avec Flutter)](./tp-flutter/)
+
+## Starter application desktop
+
+### GNU/Linux (Gnome look and feel)
+
+[Accéder au kit de démarrage](https://github.com/paul-schuhm/starter-flutter-desktop-gtk)
 
 ## Références
 
