@@ -1,6 +1,6 @@
 # Démo Dart - Poo basics, static, tooling
 
-Une démo sur Dart, quelques éléments du langage et son tooling
+Une démo sur Dart, quelques éléments du langage et son tooling. Basée sur l'exercice 3.1
 
 ## Lancer la démo
 
