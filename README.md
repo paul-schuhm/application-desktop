@@ -5,6 +5,7 @@ Sources du module d'enseignement Application Desktop, avec Flutter (niveau B3)
 - [application desktop](#application-desktop)
   - [Démos C](#démos-c)
   - [Démos Dart](#démos-dart)
+  - [Démos Flutter](#démos-flutter)
   - [TP Flutter](#tp-flutter)
   - [Starter application desktop](#starter-application-desktop)
     - [GNU/Linux (Gnome look and feel)](#gnulinux-gnome-look-and-feel)
@@ -25,6 +26,10 @@ Des démos en C commentées :
 ## Démos Dart
 
 - [Démo live : Bases POO, static et tooling](./demos-dart/demo-poo-exercice3.1/)
+
+## Démos Flutter
+
+- [Démo Live : Stateful vs Stateless](./demos-flutter/demo_live_stateful_stateless/)
 
 ## TP Flutter
 
